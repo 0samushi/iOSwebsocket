@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head lang="js">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<h1>チャットルーム</h1>
+
+<form id="myForm">
+    <input type="text" id="msg" placeholder="なにしてる？"/>　
+    <input type="text" id="name" placeholder="名前を入力"/> <br>
+    <input type="submit" value="投稿"/>
+</form>
+
+<ul id="logs">
+
+</ul>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+    $(function() {
+        var socket = io.connect();
+        $('#myForm').submit(function(e) {
+            e.preventDefault();
+            socket.json.emit('emit_from_client', {
+                msg: $('#msg').val(),
+                name: $('#name').val()
+            });
+            $('#msg').val('');
+        });
+
+        socket.on('emit_from_server', function (data) {
+            $('#logs').append($('<li>').text(data));
+        })
+    });
+</script>
+
+
+</body>
+</html>
