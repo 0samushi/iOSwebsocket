@@ -8,14 +8,17 @@ var app = require('http').createServer(handler);
 var io = require('socket.io').listen(app);
 
 var total = 0;
+var CLICK_PRICE = 100
 
 app.listen(3000);
 
 function handler(req, res) {
 
     if (req.url == '/add') {
-
         console.log('募金追加');
+        total += CLICK_PRICE
+        io.sockets.emit('emit_from_server', total + '円');
+        io.sockets.emit('emit_to_web', CLICK_PRICE + '円');
 
         res.writeHead(200);
         res.end();
