@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head lang="jp">
+    <meta charset="UTF-8">
+    <title>募金アプリ</title>
+</head>
+<body>
+
+<div>募金アプリ</div>
+
+<form id="myForm">
+    <input type="number" id="price" placeholder="金額を入力"/>
+    <input type="submit" value="募金"/>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+    $(function() {
+        var socket = io.connect();
+        $('#myForm').submit(function(e) {
+            e.preventDefault();
+            console.log($('#price').val());
+            socket.json.emit('emit_from_web', {
+                price: $('#price').val()
+            });
+            $('#price').val('');
+        });
+    });
+</script>
+
+</body>
+</html>
