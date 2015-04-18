@@ -27,8 +27,8 @@ console.log('サーバー起動中');
 
 io.sockets.on('connection', function(socket) {
     socket.on('emit_from_web', function(data) {
-        console.log(data);
-        total += data.price;
+        total += Number(data.price);
+        console.log(total);
         io.sockets.emit('emit_from_server', total + '円');
     });
 });
