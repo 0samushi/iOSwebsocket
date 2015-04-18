@@ -3,29 +3,40 @@
 <head lang="jp">
     <meta charset="UTF-8">
     <title>募金アプリ</title>
+
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
 
 <div>募金アプリ</div>
+
+<div class="btn btn-danger">リセット</div>
 
 <form id="myForm">
     <input type="number" id="price" placeholder="金額を入力"/>
     <input type="submit" value="募金"/>
 </form>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<script src="/socket.io/socket.io.js"></script>
+<ul id="logs">
+</ul>
+
 
 <script>
     $(function() {
         var socket = io.connect();
         $('#myForm').submit(function(e) {
             e.preventDefault();
-            console.log($('#price').val());
             socket.json.emit('emit_from_web', {
                 price: $('#price').val()
             });
             $('#price').val('');
+        });
+
+        socket.on('emit_to_web', function (data) {
+            $('#logs').append($('<li>').text(data));
         });
     });
 </script>

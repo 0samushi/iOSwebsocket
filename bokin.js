@@ -12,15 +12,24 @@ var total = 0;
 app.listen(3000);
 
 function handler(req, res) {
-    fs.readFile(__dirname + '/bokin.html', function(err, data) {
-        if (err) {
-            res.writeHead(500);
-            return res.end('エラー');
-        }
+
+    if (req.url == '/add') {
+
+        console.log('募金追加');
+
         res.writeHead(200);
-        res.write(data);
         res.end();
-    });
+    } else {
+        fs.readFile(__dirname + '/bokin.html', function(err, data) {
+            if (err) {
+                res.writeHead(500);
+                return res.end('エラー');
+            }
+            res.writeHead(200);
+            res.write(data);
+            res.end();
+        });
+    }
 }
 
 console.log('サーバー起動中');
@@ -30,5 +39,13 @@ io.sockets.on('connection', function(socket) {
         total += Number(data.price);
         console.log(total);
         io.sockets.emit('emit_from_server', total + '円');
+        io.sockets.emit('emit_to_web', data.price + '円');
+    });
+
+    socket.on('reset', function(data) {
+        total = 0;
+        console.log(total);
+        io.sockets.emit('emit_from_server', total + '円');
+        io.sockets.emit('emit_to_web', data);
     });
 });
