@@ -7,6 +7,8 @@ var fs = require('fs');
 var app = require('http').createServer(handler);
 var io = require('socket.io').listen(app);
 
+var total = 0;
+
 app.listen(3000);
 
 function handler(req, res) {
@@ -26,6 +28,7 @@ console.log('サーバー起動中');
 io.sockets.on('connection', function(socket) {
     socket.on('emit_from_web', function(data) {
         console.log(data);
-        io.sockets.emit('emit_from_server', data.price + '円');
+        total += data.price;
+        io.sockets.emit('emit_from_server', total + '円');
     });
 });
