@@ -25,7 +25,7 @@ function handler(req, res) {
     if (req.url == '/add') {
         console.log('募金追加');
         total += CLICK_PRICE
-        io.sockets.emit('emit_from_server', getResultData(data.price));
+        io.sockets.emit('emit_from_server', getResultData(CLICK_PRICE));
         io.sockets.emit('emit_to_web', CLICK_PRICE + '円');
 
         res.writeHead(200);
