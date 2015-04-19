@@ -10,6 +10,8 @@ var io = require('socket.io').listen(app);
 var total = 0;
 var CLICK_PRICE = 100
 
+var prices = [1, 5, 10, 50, 100, 500, 1000]
+
 app.listen(3000);
 
 function getResultData(price, store) {
@@ -21,16 +23,18 @@ function getResultData(price, store) {
 
 
 function handler(req, res) {
+    var randnum = Math.floor( Math.random() * 7 );
+    var p = prices[randnum];
     if(req.url == '/seven') {
         total += CLICK_PRICE
-        io.sockets.emit('emit_from_server', getResultData(CLICK_PRICE, 'セブンイレブンAKIBA店'));
+        io.sockets.emit('emit_from_server', getResultData(p, 'セブンイレブンAKIBA店'));
         io.sockets.emit('emit_to_web', CLICK_PRICE + '円');
 
         res.writeHead(200);
         res.end();
     } else if (req.url == '/loson') {
         total += CLICK_PRICE
-        io.sockets.emit('emit_from_server', getResultData(CLICK_PRICE, 'ローソン札幌店'));
+        io.sockets.emit('emit_from_server', getResultData(p, 'ローソン札幌店'));
         io.sockets.emit('emit_to_web', CLICK_PRICE + '円');
 
         res.writeHead(200);
