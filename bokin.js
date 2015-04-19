@@ -12,20 +12,33 @@ var CLICK_PRICE = 100
 
 app.listen(3000);
 
-function getResultData(price) {
+function getResultData(price, store) {
     return {
         total: total + '円',
-        text: price + '円 10:24 (某コンビニAKIBA店)'
+        text: price + '円 10:24 (' + store + ')'
     };
 }
 
 
 function handler(req, res) {
+    if(req.url == '/seven') {
+        total += CLICK_PRICE
+        io.sockets.emit('emit_from_server', getResultData(CLICK_PRICE, 'セブンイレブンAKIBA店'));
+        io.sockets.emit('emit_to_web', CLICK_PRICE + '円');
 
-    if (req.url == '/add') {
+        res.writeHead(200);
+        res.end();
+    } else if (req.url == '/loson') {
+        total += CLICK_PRICE
+        io.sockets.emit('emit_from_server', getResultData(CLICK_PRICE, 'ローソン札幌店'));
+        io.sockets.emit('emit_to_web', CLICK_PRICE + '円');
+
+        res.writeHead(200);
+        res.end();
+    } else if (req.url == '/add') {
         console.log('募金追加');
         total += CLICK_PRICE
-        io.sockets.emit('emit_from_server', getResultData(CLICK_PRICE));
+        io.sockets.emit('emit_from_server', getResultData(CLICK_PRICE, 'XXX店'));
         io.sockets.emit('emit_to_web', CLICK_PRICE + '円');
 
         res.writeHead(200);
@@ -49,7 +62,7 @@ io.sockets.on('connection', function(socket) {
     socket.on('emit_from_web', function(data) {
         total += Number(data.price);
         console.log(total);
-        io.sockets.emit('emit_from_server', getResultData(data.price));
+        io.sockets.emit('emit_from_server', getResultData(data.price, 'ファミマ那覇店'));
         io.sockets.emit('emit_to_web', data.price + '円');
     });
 
