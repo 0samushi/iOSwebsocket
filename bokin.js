@@ -19,7 +19,7 @@ function getResultData(price, store) {
     var date = d.getHours() + '時' + d.getMinutes() + '分' + d.getSeconds() + '秒';
     return {
         total: total + '円',
-        text: price + '円 ' + date + ' (' + store + ')'
+        text: price + '円(' + store + ' ' + date +  ')'
     };
 }
 
