@@ -28,24 +28,24 @@ function handler(req, res) {
     var randnum = Math.floor( Math.random() * 7 );
     var p = prices[randnum];
     if(req.url == '/seven') {
-        total += CLICK_PRICE
+        total += p
         io.sockets.emit('emit_from_server', getResultData(p, 'セブンイレブンAKIBA店'));
-        io.sockets.emit('emit_to_web', CLICK_PRICE + '円');
+        io.sockets.emit('emit_to_web', p + '円');
 
         res.writeHead(200);
         res.end();
     } else if (req.url == '/loson') {
-        total += CLICK_PRICE
+        total += p
         io.sockets.emit('emit_from_server', getResultData(p, 'ローソン札幌店'));
-        io.sockets.emit('emit_to_web', CLICK_PRICE + '円');
+        io.sockets.emit('emit_to_web', p + '円');
 
         res.writeHead(200);
         res.end();
     } else if (req.url == '/add') {
         console.log('募金追加');
-        total += CLICK_PRICE
-        io.sockets.emit('emit_from_server', getResultData(CLICK_PRICE, 'XXX店'));
-        io.sockets.emit('emit_to_web', CLICK_PRICE + '円');
+        total += p
+        io.sockets.emit('emit_from_server', getResultData(p, 'XXX店'));
+        io.sockets.emit('emit_to_web', p + '円');
 
         res.writeHead(200);
         res.end();
