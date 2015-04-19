@@ -15,9 +15,11 @@ var prices = [1, 5, 10, 50, 100, 500, 1000]
 app.listen(3000);
 
 function getResultData(price, store) {
+    var d = new Date();
+    var date = d.getHours() + '時' + d.getMinutes() + '分' + d.getSeconds() + '秒';
     return {
         total: total + '円',
-        text: price + '円 10:24 (' + store + ')'
+        text: price + '円 ' + date + ' (' + store + ')'
     };
 }
 
