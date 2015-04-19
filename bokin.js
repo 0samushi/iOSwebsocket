@@ -41,10 +41,10 @@ io.sockets.on('connection', function(socket) {
     socket.on('emit_from_web', function(data) {
         total += Number(data.price);
         console.log(total);
-        var data = [
-            total + '円',
-            '[10:14:35]' + data.price + '円 (某コンビニAKIBA店)'
-        ];
+        var data = {
+            total: total +'円',
+            text: '[10:14:35]' +data.price + '円 (某コンビニAKIBA店)'
+        };
         io.sockets.emit('emit_from_server', data);
         io.sockets.emit('emit_to_web', data.price + '円');
     });
