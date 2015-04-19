@@ -12,12 +12,20 @@ var CLICK_PRICE = 100
 
 app.listen(3000);
 
+function getResultData(price) {
+    return {
+        total: total + '円',
+        text: price + '円 10:24 (某コンビニAKIBA店)'
+    };
+}
+
+
 function handler(req, res) {
 
     if (req.url == '/add') {
         console.log('募金追加');
         total += CLICK_PRICE
-        io.sockets.emit('emit_from_server', total + '円');
+        io.sockets.emit('emit_from_server', getResultData(data.price));
         io.sockets.emit('emit_to_web', CLICK_PRICE + '円');
 
         res.writeHead(200);
@@ -41,11 +49,7 @@ io.sockets.on('connection', function(socket) {
     socket.on('emit_from_web', function(data) {
         total += Number(data.price);
         console.log(total);
-        var result = {
-            total: total +'円',
-            text: '[10:14:35]' +data.price + '円 (某コンビニAKIBA店)'
-        };
-        io.sockets.emit('emit_from_server', result);
+        io.sockets.emit('emit_from_server', getResultData(data.price));
         io.sockets.emit('emit_to_web', data.price + '円');
     });
 
