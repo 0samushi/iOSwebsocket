@@ -26,6 +26,10 @@ io.sockets.on('connection', function(socket) {
     });
     socket.on('emit_from_ios', function(data) {
         console.log(data);
-        socket.broadcast.emit('emit_from_server', '[ios]' + data.msg);
+        socket.broadcast.to(data.roomId).emit('emit_from_server', data.msg);
+    });
+    socket.on('join_from_ios', function (data) {
+        console.log(data);
+        socket.join(data.room);
     });
 });
