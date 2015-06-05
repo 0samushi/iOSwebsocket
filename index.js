@@ -19,17 +19,27 @@ function handler(req, res) {
 
 console.log('サーバー起動中...');
 
+//--------------------------------------
+// Socket接続時のロジック
+//--------------------------------------
 io.sockets.on('connection', function(socket) {
+
+    // ブラウザからデータ受信
     socket.on('emit_from_client', function(data) {
         console.log(data);
         io.sockets.emit('emit_from_server', '[' + data.name + ']' + data.msg);
     });
+
+    // iOSからデータ受信
     socket.on('emit_from_ios', function(data) {
         console.log(data);
         socket.broadcast.to(data.roomId).emit('emit_from_server', data);
     });
+
+    // iOSから部屋入室要求
     socket.on('join_from_ios', function (data) {
         console.log(data);
         socket.join(data.room);
     });
+
 });
