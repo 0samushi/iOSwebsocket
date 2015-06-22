@@ -42,4 +42,10 @@ io.sockets.on('connection', function(socket) {
         socket.join(data.room);
     });
 
+    // Nainから友だちリスト部屋入室要求
+    socket.on("join_in_friends_room", function(data) {
+        console.log(data);
+        
+    })
+
 });
