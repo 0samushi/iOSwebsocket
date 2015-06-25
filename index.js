@@ -55,6 +55,7 @@ io.sockets.on('connection', function(socket) {
     // Nainからステータスエミット
     socket.on('emit_status', function(data) {
         console.log(data);
+        socket.broadcast.to(data.userId).emit('emit_status_from_server', data);
     });
 
 });
