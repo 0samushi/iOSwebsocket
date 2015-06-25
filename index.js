@@ -45,6 +45,16 @@ io.sockets.on('connection', function(socket) {
     // Nainから友だちリスト部屋入室要求
     socket.on('join_in_friends_room', function(data) {
         console.log(data);
+        var i = 0;
+        for(i=0; i<data.users.length; i++) {
+            var id = data.users[i];
+            socket.join(id);
+        }
+    });
+
+    // Nainからステータスエミット
+    socket.on('emit_status', function(data) {
+        console.log(data);
     });
 
 });
