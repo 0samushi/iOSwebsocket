@@ -1,1 +1,3 @@
 # iOSwebsocket
+
+iOSでWebSocketを扱うテストプロジェクト
