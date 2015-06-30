@@ -19,13 +19,43 @@ function handler(req, res) {
 
 console.log('サーバー起動中...');
 
+//--------------------------------------
+// Socket接続時のロジック
+//--------------------------------------
 io.sockets.on('connection', function(socket) {
+
+    // ブラウザからデータ受信
     socket.on('emit_from_client', function(data) {
         console.log(data);
         io.sockets.emit('emit_from_server', '[' + data.name + ']' + data.msg);
     });
+
+    // iOSからデータ受信
     socket.on('emit_from_ios', function(data) {
         console.log(data);
-        socket.broadcast.emit('emit_from_server', '[ios]' + data.msg);
+        socket.broadcast.to(data.roomId).emit('emit_from_server', data);
     });
+
+    // iOSから部屋入室要求
+    socket.on('join_from_ios', function (data) {
+        console.log(data);
+        socket.join(data.room);
+    });
+
+    // Nainから友だちリスト部屋入室要求
+    socket.on('join_in_friends_room', function(data) {
+        console.log(data);
+        var i = 0;
+        for(i=0; i<data.users.length; i++) {
+            var id = data.users[i];
+            socket.join(id);
+        }
+    });
+
+    // Nainからステータスエミット
+    socket.on('emit_status', function(data) {
+        console.log(data);
+        socket.broadcast.to(data.userId).emit('emit_status_from_server', data);
+    });
+
 });
